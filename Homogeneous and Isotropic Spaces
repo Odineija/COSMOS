@@ -1,0 +1,23 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def simulate_sphere_metric(rho=1.0, grid_res=50):
+    x1 = np.linspace(-0.9*rho, 0.9*rho, grid_res)
+    x2 = np.linspace(-0.9*rho, 0.9*rho, grid_res)
+    X1, X2 = np.meshgrid(x1, x2)
+    
+    # ds^2 = g11 dx1^2 + 2g12 dx1dx2 + g22 dx2^2
+    denom = rho**2 - X1**2 - X2**2
+    g11 = 1 + (X1**2 / denom)
+    g22 = 1 + (X2**2 / denom)
+    g12 = (X1 * X2) / denom
+    
+    plt.figure(figsize=(8, 6))
+    plt.contourf(X1, X2, np.sqrt(g11*g22 - g12**2), cmap='plasma')
+    plt.colorbar(label='Volume Element $\sqrt{|g|}$')
+    plt.title(f"Metric Density of $S^2$ (Radius={rho})")
+    plt.xlabel("$x_1$")
+    plt.ylabel("$x_2$")
+    plt.show()
+
+simulate_sphere_metric()
